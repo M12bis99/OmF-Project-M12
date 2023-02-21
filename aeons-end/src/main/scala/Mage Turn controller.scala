@@ -108,6 +108,7 @@ def mageTurn(gameState: GameState): Unit =
 			println(" - [end] your turn")
 			println(" - [focus] a breach")
 			println(" - [open] a breach")
+			println(" - pay aether to discard a [power]")
 			val action: String = readLine("Enter the word in [quare brakets] corresponding to what you want to do: ")		
 
 			def playACard(): Unit = 
@@ -271,12 +272,27 @@ def mageTurn(gameState: GameState): Unit =
 				case "[4]" => mage.open(mage.fourthBreach)
 				case _ => println("That breach does not exist. (Don't forget the [brakets])")
 
+			def discardPower(): Unit =
+				val powerToDiscard: String = readLine("Enter name of power you want to pay of: ")
+				var power: PowerCard = PowerCard("", "")
+				power = nemesis.persistentPowers.fold(power)((x: PowerCard, y: PowerCard) => if y.title == powerToDiscard then y else x)
+				if power.title != "" then
+					if power.doesToDiscard then
+						if mage.currentAether >= power.toDiscardCost then
+							mage.currentAether -= power.toDiscardCost
+							nemesis.persistentPowers = nemesis.persistentPowers.filter(x  => x.title != power.title)
+							println("Discarded that power.")
+						else println("Not enough aether to discard this power.")
+					else println("This Power cannot be discarded.")
+				else println("Power with that name not found.")
+
 			def endMainPhase(): Unit = 
 				mage.firstBreach.focusedThisTurn = mage.firstBreach.currentPosition != 0
 				mage.secondBreach.focusedThisTurn = mage.secondBreach.currentPosition != 0
 				mage.thirdBreach.focusedThisTurn = mage.thirdBreach.currentPosition != 0
 				mage.fourthBreach.focusedThisTurn = mage.fourthBreach.currentPosition != 0
 
+				mage.currentAether = 0
 				turnOngoing = false
 
 				println("---End of Main Phase---")
@@ -288,6 +304,7 @@ def mageTurn(gameState: GameState): Unit =
 				case "[ability]" => activateAbility()
 				case "[focus]" => focusABreach()
 				case "[open]" => openABreach()
+				case "[power]" => discardPower()
 				case "[end]" => endMainPhase()
 				case _ => println("Not a valid action (Don't forget the [brakets]).")
 

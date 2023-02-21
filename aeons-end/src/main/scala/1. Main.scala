@@ -15,4 +15,4 @@
 	//start the Game
 	//gameState.gameStart()
 	
-	testDraw()
+	//testDraw()
