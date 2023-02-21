@@ -5,6 +5,8 @@ abstract class NemesisCard extends Card:
 
 	var doesUnleash: Boolean = false
 	var unleashAmount: Int = 0
+
+	var doesLoseCharge: Boolean = false
 end NemesisCard
 
 class PowerCard(var title: String, var effect: String) extends NemesisCard:	
@@ -12,15 +14,17 @@ class PowerCard(var title: String, var effect: String) extends NemesisCard:
 	
 	var doesToDiscard: Boolean = false
 	var toDiscardText: String = ""
-	var toDiscasrdCost: Int = 0
+	var toDiscardCost: Int = 0
 end PowerCard
 
 class MonsterCard(var title: String, var effect: String) extends NemesisCard:
-	
+	var health: Int = 0
+	var silenced: Boolean = false
 end MonsterCard
 
 class AttackCard(var title: String, var effect: String) extends NemesisCard:
-
+	var doesGatherDarkness: Boolean = false
+	var NemesisDeckIsEmpty: Boolean = false
 end AttackCard
 
 

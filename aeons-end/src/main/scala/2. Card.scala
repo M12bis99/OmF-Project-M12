@@ -23,11 +23,4 @@ abstract class Card :
 	var drawAmount: Int = 0
 end Card
 
-class ChoiceCard(var title: String, var effect: String) extends Card:
-	var top: Card = GemCard("Top Placeholder", "")
-	var bottom: Card = GemCard("Bottom Placeholder", "")
-	def choose(choice: String): Card = choice match
-		case "top" => top
-		case "bottom" => bottom
-end ChoiceCard
 

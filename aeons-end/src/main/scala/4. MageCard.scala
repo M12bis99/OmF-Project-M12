@@ -20,8 +20,10 @@ class RelicCard(var title: String, var effect: String) extends MageCard:
 
 end RelicCard
 
-
-
+class ChoiceCard(var title: String, var effect: String) extends MageCard:
+	var top: MageCard = GemCard("Top Placeholder", "")
+	var bottom: MageCard = GemCard("Bottom Placeholder", "")
+end ChoiceCard
 
 
 

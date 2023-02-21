@@ -1,10 +1,9 @@
-class Mage(val mageName:String, val maxHealth: Int, val breachStartPositions: Array[Int], var deck: List[Card], var ability: MageAbility) :
+class Mage(val name:String, val maxHealth: Int, val breachStartPositions: Array[Int],var hand: List[MageCard] , var deck: List[MageCard], var ability: MageAbility) :
 	var currentHealth: Int = maxHealth
 	var currentAether: Int = 0
 	val chargeCost: Int = 2
 
-	var discardPile: List[Card] = Nil
-	var hand: List[Card] = Nil
+	var discardPile: List[MageCard] = Nil
 
 	//Breaches	
 	var firstBreach = Breach(1, breachStartPositions(0))
@@ -19,28 +18,20 @@ class Mage(val mageName:String, val maxHealth: Int, val breachStartPositions: Ar
 			discardPile = Nil
 			deck match
 			case Nil => println("Deck and Discard are empty. Cannot draw cards")
-			case x::xs =>
+			case x::xs => if hand.length >= 8 then println("Hand is full, cannot draw cards.")
+				else
+					deck = xs
+					hand = x :: hand
+		case x::xs => if hand.length >= 8 then println("Hand is full, cannot draw cards.")
+			else
 				deck = xs
 				hand = x :: hand
-		case x::xs => 
-			deck = xs
-			hand = x :: hand
 	
 
 	def drawUpTo5(): Unit = 
 		if (hand.length < 5) then
 			draw()
 			drawUpTo5()
-		else ()
-
-	def gainCharge(): Unit =
-		if (ability.currentCharges >= ability.chargeAmount) then
-			println("You already have enough charges. Cannot gain more.")
-		else
-			if (currentAether <= chargeCost) then
-				currentAether = currentAether - chargeCost
-				ability.currentCharges = ability.currentCharges + 1
-			else println("Not enough Aether to by a charge.")
 
 	def focus(breach: Breach): Unit = breach.currentPosition match
 		case 0 => println("Cannot focus an open Breach.")
@@ -49,6 +40,7 @@ class Mage(val mageName:String, val maxHealth: Int, val breachStartPositions: Ar
 				breach.currentPosition = 2
 				breach.openCost = breach.openCost - breach.openCostReduction
 				currentAether = currentAether - breach.focusCost
+				breach.focusedThisTurn = true
 				println("Breach number "+breach.number+" focused.")
 			else
 				println("You do not have enough Aether to afford focusing this breach.")
@@ -57,6 +49,7 @@ class Mage(val mageName:String, val maxHealth: Int, val breachStartPositions: Ar
 				breach.currentPosition = 3
 				breach.openCost = breach.openCost - breach.openCostReduction
 				currentAether = currentAether - breach.focusCost
+				breach.focusedThisTurn = true
 				println("Breach number "+breach.number+" focused.")
 			else
 				println("You do not have enough Aether to afford focusing this breach.")
@@ -65,6 +58,7 @@ class Mage(val mageName:String, val maxHealth: Int, val breachStartPositions: Ar
 				breach.currentPosition = 4
 				breach.openCost = breach.openCost - breach.openCostReduction
 				currentAether = currentAether - breach.focusCost
+				breach.focusedThisTurn = true
 				println("Breach number "+breach.number+" focused.")
 			else
 				println("You do not have enough Aether to afford focusing this breach.")
@@ -72,6 +66,7 @@ class Mage(val mageName:String, val maxHealth: Int, val breachStartPositions: Ar
 			if (breach.focusCost <= currentAether) then
 				breach.currentPosition = 0
 				currentAether = currentAether - breach.focusCost
+				breach.focusedThisTurn = true
 				println("Breach number "+breach.number+" opened.")
 			else
 				println("You do not have enough Aether to afford focusing this breach.")	
@@ -83,14 +78,9 @@ class Mage(val mageName:String, val maxHealth: Int, val breachStartPositions: Ar
 			if (breach.openCost <= currentAether) then
 				currentAether = currentAether - breach.openCost
 				breach.currentPosition = 0
+				breach.focusedThisTurn = true
 			else
 				println("You do not have enough Aether to afford opening this breach")	
-
-	// placeholder
-	def castSpell(spell: SpellCard): Unit = ()
-
-	//placeholder
-	def playCard(card: Card): Unit = ()
 
 end Mage
 
@@ -99,14 +89,9 @@ class Breach(val number: Int, var currentPosition: Int):
 	val openCostReduction: Int = number - 1
 	var openCost: Int = number + (currentPosition - 1) * openCostReduction
 	
-	var currentSpell: List[Card] = Nil
-	
-	def addSpell(card: SpellCard): Unit = 
-		if (currentPosition != 0) then println("This Breach is closed.")
-		else
-			if (currentSpell.isEmpty)
-				currentSpell = card::Nil
-			else	println("Breach is already full.")
+	var focusedThisTurn: Boolean = currentPosition == 0
+
+	var currentSpell: List[SpellCard] = Nil
 
 end Breach
 
@@ -123,3 +108,17 @@ class MageAbility(val name: String, val description: String, val chargeAmount: I
 		else println("Not enough Charges to activate.")
 
 end MageAbility
+
+def initializeBrama(): Mage = 
+	val handAndDeck: Vector[List[MageCard]] = initializeMageCards()
+	val hand : List[MageCard] = handAndDeck(0)
+	val deck: List[MageCard] = handAndDeck(1)
+	
+
+	// Ability definition
+	val bramaAbility: MageAbility = MageAbility("Brink Siphon", "You gain 5 life", 5)
+	bramaAbility.doesHealing = true
+	bramaAbility.healingAmount = 5
+
+	val brama: Mage = Mage("Brama", 30, Array[Int](0, 2, 1, 3), hand, deck, bramaAbility)
+	brama
