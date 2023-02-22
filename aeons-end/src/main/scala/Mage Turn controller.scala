@@ -32,10 +32,10 @@ def mageTurn(gameState: GameState): Unit =
 				askToCastASpell()
 
 			def skipCasting(): Unit = 
-				val canSkipfirst: Boolean = mage.firstBreach.focusedThisTurn || mage.firstBreach.currentSpell.isEmpty
-				val canSkipsecond: Boolean = mage.secondBreach.focusedThisTurn || mage.secondBreach.currentSpell.isEmpty
-				val canSkipthird: Boolean = mage.thirdBreach.focusedThisTurn || mage.thirdBreach.currentSpell.isEmpty
-				val canSkipfourth: Boolean = mage.fourthBreach.focusedThisTurn || mage.fourthBreach.currentSpell.isEmpty
+				val canSkipfirst: Boolean = mage.firstBreach.currentPosition == 0 || mage.firstBreach.currentSpell.isEmpty
+				val canSkipsecond: Boolean = mage.secondBreach.currentPosition == 0|| mage.secondBreach.currentSpell.isEmpty
+				val canSkipthird: Boolean = mage.thirdBreach.currentPosition == 0 || mage.thirdBreach.currentSpell.isEmpty
+				val canSkipfourth: Boolean = mage.fourthBreach.currentPosition == 0 || mage.fourthBreach.currentSpell.isEmpty
 				val canSkip: Boolean = canSkipfirst && canSkipsecond && canSkipthird && canSkipfourth
 				if canSkip then println("---End of Casting Phase---") else
 					println("Spells in unopened breaches have to be cast. Cannot skip.")
