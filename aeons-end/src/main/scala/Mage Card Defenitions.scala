@@ -13,7 +13,7 @@ def initializeMageCards(): Vector[List[MageCard]] =
 	spark.doesDmg = true
 	spark.dmgAmount = 1
 
-	val buriedLight: SpellCard = SpellCard("Buried Light", "Cast: Deal 1 damage. Gain 1 Aether")
+	val buriedLight: SpellCard = SpellCard("Buried Light", "Cast: Deal 1 damage. \nGain 1 Aether")
 	buriedLight.doesDmg = true
 	buriedLight.dmgAmount = 1
 	buriedLight.doesGainAether = true

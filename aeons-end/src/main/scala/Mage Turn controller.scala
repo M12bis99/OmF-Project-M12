@@ -32,10 +32,10 @@ def mageTurn(gameState: GameState): Unit =
 				askToCastASpell()
 
 			def skipCasting(): Unit = 
-				val canSkipfirst: Boolean = mage.firstBreach.focusedThisTurn && mage.firstBreach.currentSpell.isEmpty
-				val canSkipsecond: Boolean = mage.secondBreach.focusedThisTurn && mage.secondBreach.currentSpell.isEmpty
-				val canSkipthird: Boolean = mage.thirdBreach.focusedThisTurn && mage.thirdBreach.currentSpell.isEmpty
-				val canSkipfourth: Boolean = mage.fourthBreach.focusedThisTurn && mage.fourthBreach.currentSpell.isEmpty
+				val canSkipfirst: Boolean = mage.firstBreach.focusedThisTurn || mage.firstBreach.currentSpell.isEmpty
+				val canSkipsecond: Boolean = mage.secondBreach.focusedThisTurn || mage.secondBreach.currentSpell.isEmpty
+				val canSkipthird: Boolean = mage.thirdBreach.focusedThisTurn || mage.thirdBreach.currentSpell.isEmpty
+				val canSkipfourth: Boolean = mage.fourthBreach.focusedThisTurn || mage.fourthBreach.currentSpell.isEmpty
 				val canSkip: Boolean = canSkipfirst && canSkipsecond && canSkipthird && canSkipfourth
 				if canSkip then println("---End of Casting Phase---") else
 					println("Spells in unopened breaches have to be cast. Cannot skip.")
@@ -75,7 +75,7 @@ def mageTurn(gameState: GameState): Unit =
 			//put card from breach into discard pile
 			var breachSpells: List[SpellCard] = breach.currentSpell
 			var found: Boolean = false
-			breachSpells = breachSpells.filter(x => found || x.title != spell.title || {found = true; false})
+			breach.currentSpell = breachSpells.filter(x => found || x.title != spell.title || {found = true; false})
 			mage.discardPile = mage.discardPile ::: spell::Nil
 
 			activateSpell(spell)
@@ -118,7 +118,7 @@ def mageTurn(gameState: GameState): Unit =
 				card = hand.fold(card)((x: MageCard, y: MageCard) => if y.title == cardToPlay then y else x)
 				if card.title != "" then 
 					var found = false
-					hand = hand.filter(x => found || x.title != card.title || {found = true; false})
+					mage.hand = hand.filter(x => found || x.title != card.title || {found = true; false})
 					
 					card match
 					case spell: SpellCard => playSpell(spell)
@@ -309,8 +309,9 @@ def mageTurn(gameState: GameState): Unit =
 				case _ => println("Not a valid action (Don't forget the [brakets]).")
 
 		def takeActions(): Unit = 
-			while turnOngoing do takeAction()
-		
+			while !gameState.gameEnd && turnOngoing do 
+				takeAction()
+				drawGameState(gameState)
 		takeActions()
 
 		

@@ -4,7 +4,7 @@ def initializeShopCards(): List[MageCard] =
 
 	// Gems
 
-	val allayingShell: GemCard = GemCard("Allaying Shell", "Gain 2 Aether./n Silence a Minion.")
+	val allayingShell: GemCard = GemCard("Allaying Shell", "Gain 2 Aether.\nSilence a Minion.")
 	allayingShell.cardCost = 5
 	allayingShell.doesGainAether = true
 	allayingShell.aetherAmount = 1
@@ -22,7 +22,7 @@ def initializeShopCards(): List[MageCard] =
 	hauntedBeryliteBottom.chargeAmount = 2
 
 	val hauntedBerylite: ChoiceCard = 
-	ChoiceCard("Haunted Berylite", "Gain 2 Aether/n OR /n Discard a card in hand and gain 2 charges.")
+	ChoiceCard("Haunted Berylite", "Gain 2 Aether\n OR \n Discard a card \n in hand and gain \n 2 charges.")
 	hauntedBerylite.cardCost = 3
 	hauntedBerylite.top = hauntedBeryliteTop
 	hauntedBerylite.bottom = hauntedBeryliteBottom
@@ -32,31 +32,31 @@ def initializeShopCards(): List[MageCard] =
 	geophageTop.doesGainAether = true
 	geophageTop.aetherAmount = 1
 
-	val geophageBottom: RelicCard = RelicCard("Geophage", "Gain 1 Aether. /n You destroy a card in hand.")
+	val geophageBottom: RelicCard = RelicCard("Geophage", "Gain 1 Aether. \n You destroy a card in hand.")
 	geophageBottom.doesGainAether = true
 	geophageBottom.aetherAmount = 1
 	geophageBottom.doesDestroyHand = true
 	geophageBottom.destroyHandAmount = 1
 
-	val geophage: ChoiceCard = ChoiceCard("Geophage", "Gain 1 Aether./n You may destroy a card in hand.")
+	val geophage: ChoiceCard = ChoiceCard("Geophage", "Gain 1 Aether.\nYou may destroy \na card in hand.")
 	geophage.cardCost = 3
 	geophage.top = geophageTop
 	geophage.bottom = geophageBottom
 
-	val etherealHand: RelicCard = RelicCard("Ethereal Hand", "You draw two cards.")
+	val etherealHand: RelicCard = RelicCard("Ethereal Hand", "You draw two \ncards.")
 	etherealHand.cardCost = 6
 	etherealHand.doesDraw = true
 	etherealHand.drawAmount = 2
 
 	//Spells
 
-	val ignite: SpellCard = SpellCard("Ignite", "Cast: Deal 2 damage./n You gain 1 charge.")
+	val ignite: SpellCard = SpellCard("Ignite", "Cast: Deal 2 damage.\n You gain 1 charge.")
 	ignite.doesDmg = true
 	ignite.dmgAmount = 2
 	ignite.doesGainCharge = true
 	ignite.chargeAmount = 1
 
-	val sagesBrand: SpellCard = SpellCard("Sage's Brand", "While Prepped, draw an additional/n card during your draw phase./n Cast: Deal 6 damage.")
+	val sagesBrand: SpellCard = SpellCard("Sage's Brand", "While Prepped, \ndraw an additional\n card during your \ndraw phase.\n Cast: Deal 6 damage.")
 	sagesBrand.doesDmg = true
 	sagesBrand.dmgAmount = 6
 	sagesBrand.doesDrawWhilePrepped = true

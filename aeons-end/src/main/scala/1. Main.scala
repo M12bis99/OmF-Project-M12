@@ -13,6 +13,6 @@
 	val gameState: GameState = GameState(nemesis, mage, shop)
 
 	//start the Game
-	//gameState.gameStart()
+	gameState.gameStart()
 	
-	//testDraw()
+	//drawGameState(gameState)

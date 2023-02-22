@@ -214,10 +214,13 @@ class GameState(val nemesis: Nemesis, val mage: Mage, val shop: Shop):
 
 	// Loops until Mage either Won or lost:
 	def gameStart(): Unit =
+		drawGameState(this)
 		while !gameEnd do
 			currentTurn = nextTurn()
 			if currentTurn then mageTurn(this) else nemesisTurn(this)
+			drawGameState(this)
 		gameEnded()
+		drawGameState(this)
 
 end GameState
 
