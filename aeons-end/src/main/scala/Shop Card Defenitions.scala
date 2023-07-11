@@ -51,12 +51,14 @@ def initializeShopCards(): List[MageCard] =
 	//Spells
 
 	val ignite: SpellCard = SpellCard("Ignite", "Cast: Deal 2 damage.\n You gain 1 charge.")
+	ignite.cardCost = 4
 	ignite.doesDmg = true
 	ignite.dmgAmount = 2
 	ignite.doesGainCharge = true
 	ignite.chargeAmount = 1
 
 	val sagesBrand: SpellCard = SpellCard("Sage's Brand", "While Prepped, \ndraw an additional\n card during your \ndraw phase.\n Cast: Deal 6 damage.")
+	sagesBrand.cardCost = 7
 	sagesBrand.doesDmg = true
 	sagesBrand.dmgAmount = 6
 	sagesBrand.doesDrawWhilePrepped = true
